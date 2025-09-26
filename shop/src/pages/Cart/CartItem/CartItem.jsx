@@ -1,37 +1,57 @@
 import React from 'react';
+import { FaTrashAlt, FaPlus, FaMinus } from 'react-icons/fa'; 
 import {
-ItemContainer,
-ProductImage,
-ProductDetails,
-ProductName,
-ProductPrice,
-Controls,
-ControlButton,
-
-
-
+  ItemContainer,
+  ProductImage,
+  ProductDetails,
+  ProductName,
+  ProductPrice,
+  Controls,
+  ControlButton,
 } from "./CartItem.styled";
 
+
+const Quantity = ({ children }) => <span style={{ padding: '0 8px', minWidth: '20px', textAlign: 'center' }}>{children}</span>; 
+const RemoveButton = ControlButton; 
 
 
 const CartItem = ({ item, onIncrease, onDecrease, onRemove }) => {
   return (
     <ItemContainer>
       <ProductImage src={item.image} alt={item.name} />
+      
       <ProductDetails>
         <ProductName>{item.name}</ProductName>
-        <ProductPrice>${item.price / 100}</ProductPrice>
+        
+        <div style={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'flex-start', 
+          gap: '10px' 
+        }}>
+            
+            <ProductPrice>${(item.price / 100).toFixed(2)}</ProductPrice> 
+            
+            <RemoveButton 
+              aria-label="Remove item" 
+              onClick={() => onRemove(item.id)} 
+              style={{ color: 'red', background: 'none', border: 'none', cursor: 'pointer', padding: '0', fontSize: '1.1rem' }}
+            >
+              <FaTrashAlt />
+            </RemoveButton>
+        </div>
+        
       </ProductDetails>
+      
       <Controls>
-        <RemoveButton aria-label="Remove item" onClick={() => onRemove(item.id)}>
-          <i className="fas fa-trash"></i> {/* Icon for the trash can */}
-        </RemoveButton>
         <ControlButton aria-label="Decrease quantity" onClick={() => onDecrease(item.id)}>
-          -
+          <FaMinus />
         </ControlButton>
+        
         <Quantity>{item.quantity}</Quantity>
+        
         <ControlButton aria-label="Increase quantity" onClick={() => onIncrease(item.id)}>
-          +
+          <FaPlus />
         </ControlButton>
       </Controls>
     </ItemContainer>
@@ -39,3 +59,6 @@ const CartItem = ({ item, onIncrease, onDecrease, onRemove }) => {
 };
 
 export default CartItem;
+
+
+

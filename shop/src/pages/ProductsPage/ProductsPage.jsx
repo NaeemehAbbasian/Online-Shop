@@ -1,3 +1,4 @@
+
 import React from 'react';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
@@ -13,13 +14,15 @@ import {
   AddToCartButton,
   LoadingText,
   ErrorText
-
 } from "./ProductsPage.styled";
 
 
 const fetchProducts = async () => {
-  const response = await axios.get('https://course-api.com/react-store-products');
-  return response.data.slice(0, 4);
+  const API_URL = 'https://strapi-store-server.onrender.com/api/products'; 
+  const response = await axios.get(API_URL);
+  const productsArray = response.data.data; 
+
+  return productsArray.slice(0, 15);
 };
 
 const ProductsPage = () => {
@@ -31,7 +34,29 @@ const ProductsPage = () => {
   const { dispatch } = useCart();
 
   const handleAddToCart = (product) => {
-    dispatch({ type: 'ADD_TO_CART', payload: product });
+    
+    const { id } = product;
+    const { 
+        title: name,
+        price,
+        image 
+    } = product.attributes;
+
+    const numericPrice = parseInt(price); 
+
+    if (isNaN(numericPrice)) {
+        console.error("Invalid price value received from Strapi:", price);
+        return; 
+    }
+
+    const itemToAdd = {
+      id: id,
+      name: name,
+      price: numericPrice, 
+      image: image,
+    };
+    
+    dispatch({ type: 'ADD_TO_CART', payload: itemToAdd });
   };
 
   if (isLoading) {
@@ -48,9 +73,13 @@ const ProductsPage = () => {
       <ProductsGrid>
         {products.map(product => (
           <ProductCard key={product.id}>
-            <ProductImage src={product.image} alt={product.name} />
-            <ProductName>{product.name}</ProductName>
-            <ProductPrice>${product.price / 100}</ProductPrice>
+            <ProductImage 
+              src={product.attributes.image} 
+              alt={product.attributes.title} 
+            />
+            <ProductName>{product.attributes.title}</ProductName>
+            <ProductPrice>${(product.attributes.price / 100).toFixed(2)}</ProductPrice>
+            
             <AddToCartButton onClick={() => handleAddToCart(product)}>
             Adding to the Bag
             </AddToCartButton>

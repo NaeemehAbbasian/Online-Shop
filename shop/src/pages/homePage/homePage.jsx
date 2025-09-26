@@ -8,19 +8,21 @@ import {
   SearchInput,
   SearchButton,
   ExploreButton,
-
 } from "./homePage.styled";
-
 
 const HomePage = () => {
   return (
     <HeroSection>
       <HeroTitle>
-        Explore the Latest <HeroTitleHighlight>Tech</HeroTitleHighlight>
+        Transform Your Living Space with{" "}
+        <HeroTitleHighlight>
+          Stylish Furniture & Home Essentials
+        </HeroTitleHighlight>
       </HeroTitle>
       <HeroSubtitle>
-        Find the best gadgets, accessories, and electronics to power your life.
-        From smartphones to smart home devices, we have it all.
+        Discover the finest collection of modern beds, chic furnishings, and
+        home décor to create the house you've always dreamed of. Quality and
+        comfort, hand in hand.
       </HeroSubtitle>
       <SearchContainer>
         <SearchInput type="text" placeholder="Search for a product..." />

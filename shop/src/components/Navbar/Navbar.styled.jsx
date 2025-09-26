@@ -61,3 +61,6 @@ export const CartCount = styled.span`
   background-color: #ef4444;
   border-radius: 9999px;
 `;
+
+
+
